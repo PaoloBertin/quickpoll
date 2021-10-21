@@ -22,11 +22,23 @@ public class PollController {
 
     private final PollService pollService;
 
+    protected void verifyPoll(Long pollId) throws ResourceNotFoundException {
+
+        Optional<Poll> poll = pollService.getPollById(pollId);
+        if (!poll.isPresent()) {
+            throw new ResourceNotFoundException("Poll with id " + pollId + " not found");
+        }
+    }
+
     @GetMapping("/{pollId}")
     public ResponseEntity<Poll> getPollById(@PathVariable Long pollId) {
 
+        verifyPoll(pollId);
+
         Optional<Poll> poll = pollService.getPollById(pollId);
-        if(! poll.isPresent()) {
+
+
+        if (!poll.isPresent()) {
             throw new ResourceNotFoundException("Poll with id " + pollId + " not found");
         }
 
@@ -52,7 +64,8 @@ public class PollController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(ServletUriComponentsBuilder.fromCurrentRequest()
                                                                .path("/{id}")
-                                                               .buildAndExpand(poll.getId()).toUri());
+                                                               .buildAndExpand(poll.getId())
+                                                               .toUri());
 
         log.debug("created resource with uri =" + responseHeaders.getLocation());
 
@@ -62,17 +75,23 @@ public class PollController {
     @PutMapping("/{pollId}")
     public ResponseEntity<?> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId) {
 
+        verifyPoll(pollId);
+
         log.debug("edit record " + pollId);
 
         pollService.savePoll(poll);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                             .build();
     }
 
     @DeleteMapping("/{pollId}")
     public ResponseEntity<?> deletePoll(@PathVariable Long pollId) {
 
+        verifyPoll(pollId);
+
         pollService.deletePoll(pollId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                             .build();
     }
 }

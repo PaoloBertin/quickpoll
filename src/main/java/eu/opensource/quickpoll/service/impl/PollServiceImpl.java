@@ -27,7 +27,6 @@ public class PollServiceImpl implements PollService {
     public Optional<Poll> getPollById(Long pollId) {
 
         return pollRepository.findById(pollId);
-//        return pollRepository.findOne(pollId);
     }
 
     @Transactional(readOnly = true)
