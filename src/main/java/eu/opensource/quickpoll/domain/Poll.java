@@ -1,6 +1,9 @@
 package eu.opensource.quickpoll.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,8 +16,11 @@ public class Poll implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String question;
 
+    @Size(min=2, max = 6)
+    @OrderBy
     @JoinTable(name = "poll_option",
             joinColumns = @JoinColumn(name = "poll_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id"))

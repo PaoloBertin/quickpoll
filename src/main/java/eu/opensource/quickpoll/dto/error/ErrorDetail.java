@@ -1,5 +1,9 @@
 package eu.opensource.quickpoll.dto.error;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ErrorDetail {
 
     private String title;
@@ -10,7 +14,11 @@ public class ErrorDetail {
 
     private long timeStamp;
 
+    private String path;
+
     private String developerMessage;
+
+    private Map<String, List<ValidationError>> errors = new HashMap<String, List<ValidationError>>();
 
     public String getTitle() {
 
@@ -52,6 +60,16 @@ public class ErrorDetail {
         this.timeStamp = timeStamp;
     }
 
+    public String getPath() {
+
+        return path;
+    }
+
+    public void setPath(String path) {
+
+        this.path = path;
+    }
+
     public String getDeveloperMessage() {
 
         return developerMessage;
@@ -61,4 +79,14 @@ public class ErrorDetail {
 
         this.developerMessage = developerMessage;
     }
+    public Map<String, List<ValidationError>> getErrors() {
+
+        return errors;
+    }
+
+    public void setErrors(Map<String, List<ValidationError>> errors) {
+
+        this.errors = errors;
+    }
+
 }
