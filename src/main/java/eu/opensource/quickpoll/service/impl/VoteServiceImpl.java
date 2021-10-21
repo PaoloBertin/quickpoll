@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -33,8 +34,9 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public Iterable<Vote> getVotesByPoll(Long pollId) {
 
-        Poll poll = pollService.getPollById(pollId);
-        Set<Option> options = poll.getOptions();
+        Optional<Poll> poll = pollService.getPollById(pollId);
+
+        Set<Option> options = poll.get().getOptions();
 
         List<Vote> votes = new ArrayList<>();
         for (Option option : options) {

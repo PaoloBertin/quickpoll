@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -23,9 +24,10 @@ public class PollServiceImpl implements PollService {
 
     @Transactional(readOnly = true)
     @Override
-    public Poll getPollById(Long pollId) {
+    public Optional<Poll> getPollById(Long pollId) {
 
-        return pollRepository.findById(pollId).orElseThrow();
+        return pollRepository.findById(pollId);
+//        return pollRepository.findOne(pollId);
     }
 
     @Transactional(readOnly = true)

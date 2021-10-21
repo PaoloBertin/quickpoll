@@ -1,6 +1,7 @@
 package eu.opensource.quickpoll.web;
 
 import eu.opensource.quickpoll.domain.Poll;
+import eu.opensource.quickpoll.exception.ResourceNotFoundException;
 import eu.opensource.quickpoll.service.PollService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping("/polls")
@@ -23,10 +25,14 @@ public class PollController {
     @GetMapping("/{pollId}")
     public ResponseEntity<Poll> getPollById(@PathVariable Long pollId) {
 
-        Poll poll = pollService.getPollById(pollId);
+        Optional<Poll> poll = pollService.getPollById(pollId);
+        if(! poll.isPresent()) {
+            throw new ResourceNotFoundException("Poll with id " + pollId + " not found");
+        }
+
         log.debug("return poll with id = " + pollId);
 
-        return ResponseEntity.ok(poll);
+        return ResponseEntity.ok(poll.get());
     }
 
     @GetMapping
